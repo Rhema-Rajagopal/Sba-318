@@ -36,7 +36,9 @@ router.get("/:id", (req, res) => {
   const user = users.find((user) => user.id === id);
   if (user) {
     res.json(user);
-  } else {
+  }
+  // // lesson errror handling Middleware
+  else {
     res.status(404).json({ message: "User not found" });
   }
 });

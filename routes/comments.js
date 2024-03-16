@@ -7,11 +7,6 @@ let comments = [
   { id: 3, postId: 2, body: "Comment 1 on post 2" },
 ];
 
-// Get all comments
-router.get("/", (req, res) => {
-  res.json(comments);
-});
-
 // Create a new comment
 router.post("/", (req, res) => {
   const newComment = req.body;
@@ -21,14 +16,23 @@ router.post("/", (req, res) => {
   res.status(201).json(newComment);
 });
 
-// Get a comment by ID
+//Get all comments
+
+router.get("/", (req, res) => {
+  res.json(comments);
+});
+
+//get comments by id
+
 router.get("/:id", (req, res) => {
   const id = parseInt(req.params.id);
   const comment = comments.find((comment) => comment.id === id);
   if (comment) {
     res.json(comment);
-  } else {
-    res.status(404).json({ message: "Comment not found" });
+  }
+  // lesson errror handling Middleware
+  else {
+    res.status(404).json({ message: "Comments not found" });
   }
 });
 

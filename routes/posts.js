@@ -34,7 +34,9 @@ router.get("/:id", (req, res) => {
   const post = posts.find((post) => post.id === id);
   if (post) {
     res.json(post);
-  } else {
+  }
+  // lesson errror handling Middleware
+  else {
     res.status(404).json({ message: "Post not found" });
   }
 });
