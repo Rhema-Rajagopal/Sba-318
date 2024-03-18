@@ -22,11 +22,34 @@ router.get("/", (req, res) => {
 // Create a new post
 router.post("/", (req, res) => {
   const newPost = req.body;
+
   // Generate a new unique ID (You can use libraries like 'uuid' for production)
   newPost.id = posts.length + 1;
   posts.push(newPost);
   res.status(201).json(newPost);
 });
+// POST USER - create a new user
+
+// router.post("/", (req, res) => {
+//   if (req.body.userId && req.body.body && req.body.title) {
+//     if (posts.find((u) => u.userId == req.body.userId)) {
+//       res.json({ error: `UserID already taken` });
+//       return;
+//     }
+
+//     const newUser = {
+//       id: posts[posts.length - 1].id + 1,
+//       userId: req.body.userId,
+//       body: req.body.body,
+//       title: req.body.title,
+//     };
+
+//     posts.push(newUser);
+//     res.json(posts[posts.length - 1]);
+//   } else {
+//     res.json({ error: "Insufficient Data" });
+//   }
+// });
 
 // Get a post by ID
 router.get("/:id", (req, res) => {

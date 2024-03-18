@@ -1,6 +1,11 @@
 const express = require("express");
 const app = express();
 const port = 3000;
+const bodyParser = require("body-parser");
+
+//BodyParser
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ extended: true }));
 
 // Middleware to parse JSON bodies
 app.use(express.json());
