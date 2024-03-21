@@ -1,6 +1,28 @@
 const express = require("express");
 const router = express.Router();
 
+router.use(logger);
+
+router.get("/new", (req, res) => {
+  res.render("users/new");
+});
+
+router.post("/", (req, res) => {
+  const isValid = false;
+  if (isValid) {
+    users.push({ firstName: req.body.firstName });
+    res.redirect(`/users/${users.length - 1}`);
+  } else {
+    console.log("Error");
+    res.render("users/new", { firstName: req.body.firstName });
+  }
+});
+
+function logger(req, res, next) {
+  console.log(req.originalUrl);
+  next();
+}
+
 let users = [
   { id: 1, name: "Alice" },
   { id: 2, name: "Bob" },
@@ -10,15 +32,14 @@ let users = [
 router.get("/", (req, res) => {
   res.json(users);
 });
-
 // Create a new user
-router.post("/", (req, res) => {
-  const newUser = req.body;
-  // Generate a new unique ID (You can use libraries like 'uuid' for production)
-  newUser.id = users.length + 1;
-  users.push(newUser);
-  res.status(201).json(newUser);
-});
+// router.post("/", (req, res) => {
+//   const newUser = req.body;
+//   // Generate a new unique ID (You can use libraries like 'uuid' for production)
+//   newUser.id = users.length + 1;
+//   users.push(newUser);
+//   res.status(201).json(newUser);
+// });
 // Delete a user by ID
 router.delete("/:id", (req, res) => {
   const id = parseInt(req.params.id);
@@ -30,6 +51,7 @@ router.delete("/:id", (req, res) => {
     res.status(404).json({ message: "User not found" });
   }
 });
+
 // Get a user by ID
 router.get("/:id", (req, res) => {
   const id = parseInt(req.params.id);
@@ -39,6 +61,21 @@ router.get("/:id", (req, res) => {
   }
   // // lesson errror handling Middleware
   else {
+    res.status(404).json({ message: "User not found" });
+  }
+});
+
+//patch
+
+router.patch("/:id", (req, res) => {
+  const id = parseInt(req.params.id);
+  const userIndex = users.findIndex((user) => user.id === id);
+
+  if (userIndex !== -1) {
+    const updatedUser = req.body;
+    users[userIndex] = { ...users[userIndex], ...updatedUser };
+    res.json(users[userIndex]);
+  } else {
     res.status(404).json({ message: "User not found" });
   }
 });

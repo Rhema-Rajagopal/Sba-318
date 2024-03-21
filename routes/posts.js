@@ -1,23 +1,32 @@
 const express = require("express");
 const router = express.Router();
 
+router.get("/", (req, res) => {
+  // Assuming you have posts data available
+  let posts = [
+    { id: 1, userId: 1, title: "Post 1", body: "Body of post 1" },
+    { id: 2, userId: 2, title: "Post 2", body: "Body of post 2" },
+  ];
+  // Render the index view and pass posts data to it
+  res.render("index", { posts });
+});
 let posts = [
   { id: 1, userId: 1, title: "Post 1", body: "Body of post 1" },
   { id: 2, userId: 2, title: "Post 2", body: "Body of post 2" },
 ];
 
 // Get all posts or filter by userId if provided in query parameters
-router.get("/", (req, res) => {
-  const { userId } = req.query;
-  if (userId) {
-    const filteredPosts = posts.filter(
-      (post) => post.userId === parseInt(userId)
-    );
-    res.json(filteredPosts);
-  } else {
-    res.json(posts);
-  }
-});
+// router.get("/", (req, res) => {
+//   const { userId } = req.query;
+//   if (userId) {
+//     const filteredPosts = posts.filter(
+//       (post) => post.userId === parseInt(userId)
+//     );
+//     res.json(filteredPosts);
+//   } else {
+//     res.json(posts);
+//   }
+// });
 
 // Create a new post
 router.post("/", (req, res) => {
@@ -30,26 +39,26 @@ router.post("/", (req, res) => {
 });
 // POST USER - create a new user
 
-// router.post("/", (req, res) => {
-//   if (req.body.userId && req.body.body && req.body.title) {
-//     if (posts.find((u) => u.userId == req.body.userId)) {
-//       res.json({ error: `UserID already taken` });
-//       return;
-//     }
+router.post("/", (req, res) => {
+  if (req.body.userId && req.body.body && req.body.title) {
+    if (posts.find((u) => u.userId == req.body.userId)) {
+      res.json({ error: `UserID already taken` });
+      return;
+    }
 
-//     const newUser = {
-//       id: posts[posts.length - 1].id + 1,
-//       userId: req.body.userId,
-//       body: req.body.body,
-//       title: req.body.title,
-//     };
+    const newUser = {
+      id: posts[posts.length - 1].id + 1,
+      userId: req.body.userId,
+      body: req.body.body,
+      title: req.body.title,
+    };
 
-//     posts.push(newUser);
-//     res.json(posts[posts.length - 1]);
-//   } else {
-//     res.json({ error: "Insufficient Data" });
-//   }
-// });
+    posts.push(newUser);
+    res.json(posts[posts.length - 1]);
+  } else {
+    res.json({ error: "Insufficient Data" });
+  }
+});
 
 // Get a post by ID
 router.get("/:id", (req, res) => {
